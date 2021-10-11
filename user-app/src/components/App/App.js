@@ -4,6 +4,7 @@ import Users from "../Users/Users";
 import Home from "../Home/Home";
 import Not from "../Not/Not";
 import Addresses from "../Addresses/Addresses";
+import { Container } from "react-materialize";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 function App() {
@@ -13,21 +14,23 @@ function App() {
         <Navigation />
       </header>
       <main>
-        <Switch>
-          <Route path="/addresses">
-            <Addresses />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/404">
-            <Not />
-          </Route>
-          <Route path="/" exact>
-            <Home />
-          </Route>
-          <Redirect to="/404" />
-        </Switch>
+        <Container>
+          <Switch>
+            <Route path="/addresses">
+              <Addresses />
+            </Route>
+            <Route path="/users">
+              <Users />
+            </Route>
+            <Route path="/404">
+              <Not />
+            </Route>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Redirect to="/404" />
+          </Switch>
+        </Container>
       </main>
     </div>
   );
