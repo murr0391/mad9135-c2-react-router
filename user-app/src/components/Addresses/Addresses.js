@@ -1,42 +1,48 @@
 import { useState, useEffect } from "react";
-import { Route, NavLink } from "react-router-dom";
-import User from '../User/User';
+import { Table } from "react-materialize";
+import AddressRow from "../AddressRow/AddressRow";
+
 export default function Addresses(props) {
   const [list, setList] = useState([]);
-  //function addPlanet() {
-  //  setList([...list, "Alderan"]);
-  //}
-  async function fetchData() {
-    let url = "https://swapi.dev/api/planets";
-    let resp = await fetch(url);
-    let data = await resp.json();
-    setList(data.results);
-  }
+  const numberOfUsersToFetch = Math.floor(Math.random() * 17) + 16;
 
   useEffect(() => {
+
+    async function fetchData() {
+      let url = `https://randomuser.me/api/?nat=ca,us,au,nz,gb&seed=murr0391&format=json&results=${numberOfUsersToFetch}`;
+      let resp = await fetch(url);
+      let data = await resp.json();
+      let sortedAddresses = data.results.sort((a,b) => {
+        if (a.name.last < b.name.last) {
+            return -1;
+        } else if (a.name.last > b.name.last){
+            return 1;
+        } else 
+        return 0;
+      });
+      setList(sortedAddresses);
+    }
+
     fetchData();
   }, []);
-  function findUser(id) {
-    return list.find((item, index) => parseInt(id) === index + 1);
-    //return an object for the single planet
+  if (list && list.length) {
+    return (
+      <Table>
+        <thead>
+          <tr>
+            <th>Last</th>
+            <th>First</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>PostCode</th>
+          </tr>
+        </thead>
+        <tbody>{list && list.map((item) => <AddressRow props={item} />)}</tbody>
+      </Table>
+    );
+  } else {
+    return null;
   }
-  return (
-    <div className="planets">
-      {list.length === 0 && <p>Loading...</p>}
-      <div className="planet-list">
-        {list.map((item, index) => (
-          <p key={item.name}>
-            <NavLink to={`/addresses/${index + 1}`}>{item.name}</NavLink>
-            <span>{item.terrain}</span>
-          </p>
-        ))}
-      </div>
-
-      <div className="planet-details">
-        <Route path="/addresses/:id">
-          <User findUser={findUser} />
-        </Route>
-      </div>
-    </div>
-  );
 }
