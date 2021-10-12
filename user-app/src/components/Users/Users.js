@@ -1,22 +1,50 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Card, TextInput, Button } from "react-materialize";
-import UserCard from "../UserCard/UserCard";
+import { Route } from "react-router-dom";
+import UserCards from "../UserCards/UserCards";
+import Addresses from "../Addresses/Addresses";
 
 export default function Users(props) {
   const [list, setList] = useState([]);
-  const numberOfUsersToFetch = Math.floor(Math.random() * 17) + 16;
-
 
   useEffect(() => {
     async function fetchData() {
-      let url = `https://randomuser.me/api/?nat=ca,us,au,nz,gb&seed=murr0391&format=json&results=${numberOfUsersToFetch}`;
-      let resp = await fetch(url);
-      let data = await resp.json();
-      setList(data.results);
+      const NUMBER_OF_USERS_TO_FETCH = Math.floor(Math.random() * 17) + 16;
+      const SEED = "murr0391";
+      const url = `https://randomuser.me/api/?nat=ca,us,au,nz,gb&seed=${SEED}&format=json&results=${NUMBER_OF_USERS_TO_FETCH}`;
+      const resp = await fetch(url);
+      const data = await resp.json();
+      const sortedAddresses = data.results.sort((a,b) => {
+        if (a.name.last < b.name.last) {
+          return -1;
+        } else if (a.name.last > b.name.last){
+          return 1;
+        } else 
+          return 0;
+        });
+      setList(sortedAddresses);
     }
 
     fetchData();
   }, []);
+  if (!list || !list.length) {
+    return <p>There are no users yet</p>;
+  } else {
+    return (
+      <div>
+      <Route path="/users">
+        <UserCards props={list} />
+      </Route>
+      <Route path="/addresses">
+        <Addresses props={list} />
+      </Route>
+      </div>
+
+    );
+    //return (<UserCards props={list} />);
+  }
+}
+
+/*
   return (
     <Row>
       <Col s12 m6>
@@ -32,7 +60,7 @@ export default function Users(props) {
   );
 }
 
-/*
+
     <div className="users">
       <p>This is the users page</p>
       {!list.length && <p>There are no users yet</p>}

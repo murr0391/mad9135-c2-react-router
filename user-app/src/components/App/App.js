@@ -3,7 +3,6 @@ import Navigation from "../Navigation/Navigation";
 import Users from "../Users/Users";
 import Home from "../Home/Home";
 import Not from "../Not/Not";
-import Addresses from "../Addresses/Addresses";
 import { Container } from "react-materialize";
 import { Switch, Route, Redirect } from "react-router-dom";
 
@@ -17,7 +16,7 @@ function App() {
         <Container>
           <Switch>
             <Route path="/addresses">
-              <Addresses />
+              <Users />
             </Route>
             <Route path="/users">
               <Users />
