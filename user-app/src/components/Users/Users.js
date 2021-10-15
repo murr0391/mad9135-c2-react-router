@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
 import UserCards from "../UserCards/UserCards";
+import UserDetails from "../UserDetails/UserDetails";
 import Addresses from "../Addresses/Addresses";
 
 export default function Users(props) {
@@ -13,32 +14,34 @@ export default function Users(props) {
       const url = `https://randomuser.me/api/?nat=ca,us,au,nz,gb&seed=${SEED}&format=json&results=${NUMBER_OF_USERS_TO_FETCH}`;
       const resp = await fetch(url);
       const data = await resp.json();
-      const sortedAddresses = data.results.sort((a,b) => {
+      const sortedAddresses = data.results.sort((a, b) => {
         if (a.name.last < b.name.last) {
           return -1;
-        } else if (a.name.last > b.name.last){
+        } else if (a.name.last > b.name.last) {
           return 1;
-        } else 
-          return 0;
-        });
+        } else return 0;
+      });
       setList(sortedAddresses);
     }
 
     fetchData();
   }, []);
+
   if (!list || !list.length) {
     return <p>There are no users yet</p>;
   } else {
     return (
       <div>
-      <Route path="/users">
-        <UserCards props={list} />
-      </Route>
-      <Route path="/addresses">
-        <Addresses props={list} />
-      </Route>
+        <Route path="/users">
+          <UserCards props={list} />
+        </Route>
+        <Route path="/user/:id">
+          <UserDetails props={list} />
+        </Route>
+        <Route path="/addresses">
+          <Addresses props={list} />
+        </Route>
       </div>
-
     );
     //return (<UserCards props={list} />);
   }

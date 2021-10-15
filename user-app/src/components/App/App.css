@@ -11,14 +11,39 @@
 /*
   // TODO responsive width if only one card across
 */
+.row {
+  margin-bottom: 10px;
+}
 .card {
   /*add inline-display*/
   display: inline-block;
 
-  max-width1: 33%;
-  min-width1: 33%;
+  max-width: 240px;
+  min-width: 240px;
   min-height: 240px;
   max-height: 240px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.card .card-content {
+    padding-top: 16px;
+}
+
+.card-image {
+  height1: 80px;
+  width: 50%;
+  margin-left: 25%;
+}
+
+.email {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+}
+
+.user-address {
+  line-height: 0.6;
 }
 
 .App {

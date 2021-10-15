@@ -18,7 +18,10 @@ function App() {
             <Route path="/addresses">
               <Users />
             </Route>
-            <Route path="/users">
+            <Route path="/users" exact>
+              <Users />
+            </Route>
+            <Route path="/user/:id">
               <Users />
             </Route>
             <Route path="/404">

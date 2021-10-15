@@ -16,7 +16,13 @@ export default function Addresses({props}) {
             <th>PostCode</th>
           </tr>
         </thead>
-        <tbody>{props.map((item) => <AddressRow props={item} />)}</tbody>
+        <tbody>
+          {props && props.map((item, index) => {
+            item["id"] = index;
+            return (
+            <AddressRow props={item} />);}
+          )}
+      </tbody>
       </Table>
     );
   } else {
