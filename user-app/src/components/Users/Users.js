@@ -9,11 +9,18 @@ export default function Users(props) {
 
   useEffect(() => {
     async function fetchData() {
+      let spinner = document.getElementById("spinner");
+      if (spinner) {
+        spinner.classList.add("show");
+      }
       const NUMBER_OF_USERS_TO_FETCH = Math.floor(Math.random() * 17) + 16;
       const SEED = "murr0391";
       const url = `https://randomuser.me/api/?nat=ca,us,au,nz,gb&seed=${SEED}&format=json&results=${NUMBER_OF_USERS_TO_FETCH}`;
       const resp = await fetch(url);
       const data = await resp.json();
+      if (spinner) {
+        spinner.classList.remove("show");
+      }
       const sortedAddresses = data.results.sort((a, b) => {
         if (a.name.last < b.name.last) {
           return -1;
@@ -28,7 +35,7 @@ export default function Users(props) {
   }, []);
 
   if (!list || !list.length) {
-    return <p>There are no users yet</p>;
+    return <p>Loading users ...</p>;
   } else {
     return (
       <div>
